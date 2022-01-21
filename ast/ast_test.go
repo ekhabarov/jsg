@@ -19,10 +19,127 @@ var _ = Describe("Ast", func() {
 				schema, err := ast.Parse(strings.NewReader(data))
 				Expect(err).NotTo(HaveOccurred())
 
-				Expect(*schema).To(MatchAllFields(fields))
+				Expect(*schema).To(MatchFields(IgnoreExtras, fields))
 			},
 
-			Entry("", `{ "type": "string"}`, Fields{"Type": Equal(ast.String)}),
+			// String type
+
+			Entry("String", `{ "type": "string"}`, Fields{"Type": Equal(ast.String)}),
+
+			// String length
+
+			Entry("String: length", `{ "type": "string", "minLength": 3, "maxLength": 5}`, Fields{
+				"Type":      Equal(ast.String),
+				"MinLength": Equal(uint32(3)),
+				"MaxLength": Equal(uint32(5)),
+			}),
+
+			// String pattern
+
+			Entry("String: pattern", `{ "type": "string", "pattern": "[A-Za-z0-9]"}`, Fields{
+				"Type":    Equal(ast.String),
+				"Pattern": Equal("[A-Za-z0-9]"),
+			}),
+
+			// String Format
+
+			Entry("String: format date-time", `{ "type": "string", "format": "date-time"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatDateTime),
+			}),
+
+			Entry("String: format time", `{ "type": "string", "format": "time"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatTime),
+			}),
+
+			Entry("String: format date", `{ "type": "string", "format": "date"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatDate),
+			}),
+
+			Entry("String: format duration", `{ "type": "string", "format": "duration"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatDuration),
+			}),
+
+			Entry("String: format email", `{ "type": "string", "format": "email"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatEmail),
+			}),
+
+			Entry("String: format idn-email", `{ "type": "string", "format": "idn-email"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatIdnEmail),
+			}),
+
+			Entry("String: format hostname", `{ "type": "string", "format": "hostname"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatHostname),
+			}),
+
+			Entry("String: format idn-hostname", `{ "type": "string", "format": "idn-hostname"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatIdnHostname),
+			}),
+
+			Entry("String: format ipv4", `{ "type": "string", "format": "ipv4"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatIPv4),
+			}),
+
+			Entry("String: format ipv6", `{ "type": "string", "format": "ipv6"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatIPv6),
+			}),
+
+			Entry("String: format uuid", `{ "type": "string", "format": "uuid"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatUUID),
+			}),
+
+			Entry("String: format uri", `{ "type": "string", "format": "uri"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatURI),
+			}),
+
+			Entry("String: format uri-reference", `{ "type": "string", "format": "uri-reference"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatURIReference),
+			}),
+
+			Entry("String: format iri", `{ "type": "string", "format": "iri"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatIRI),
+			}),
+
+			Entry("String: format iri-reference", `{ "type": "string", "format": "iri-reference"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatIRIReference),
+			}),
+
+			Entry("String: format uri-template", `{ "type": "string", "format": "uri-template"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatURITemplate),
+			}),
+
+			Entry("String: format json-pointer", `{ "type": "string", "format": "json-pointer"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatJSONPointer),
+			}),
+
+			Entry("String: format relative-json-pointer", `{ "type": "string", "format": "relative-json-pointer"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatRelativeJSONPointer),
+			}),
+
+			Entry("String: format regex", `{ "type": "string", "format": "regex"}`, Fields{
+				"Type":   Equal(ast.String),
+				"Format": Equal(ast.FormatRegex),
+			}),
+
+			// Number
+
 			Entry("", `{ "type": "number"}`, Fields{"Type": Equal(ast.Number)}),
 			Entry("", `{ "type": "integer"}`, Fields{"Type": Equal(ast.Integer)}),
 			Entry("", `{ "type": "object"}`, Fields{"Type": Equal(ast.Object)}),

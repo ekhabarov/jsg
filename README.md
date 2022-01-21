@@ -15,4 +15,25 @@ JSON schema.
 * `generator`: produces Go code out of AST.
 
 
-## Data types mapping
+## What's supported
+
+### Features
+
+| Feature            | Parse | Generate | Validation | Notes |
+|:-------------------|:-----:|:--------:|:----------:|:-----:|
+| `string`           | x     |          |            |       |
+| `string`:`length`  | x     |          |            |       |
+| `string`:`pattern` | x     |          |            |       |
+| `string`:`format`  | x     |          |            |       |
+| `number`           | x     |          |            |       |
+| `integer`          | x     |          |            |       |
+| `object`           | x     |          |            |       |
+| `array`            | x     |          |            |       |
+| `boolean`          | x     |          |            |       |
+| `null`             | x     |          |            |       |
+| `multi types`      | x     |          |            |       |
+
+* `Parse`: library recognizes the feature inside a JSON schema and converts it’s
+  into AST.
+* `Generate`: library reads AST and generated Go code for the feature.
+* `Validation`: library is able to validate a data againt feature.
