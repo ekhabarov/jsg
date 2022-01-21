@@ -11,7 +11,13 @@ import (
 type SchemaType uint8
 
 const (
-	Number SchemaType = 1 << iota
+	String SchemaType = 1 << iota
+	Number
+	Integer
+	Object
+	Array
+	Boolean
+	Null
 )
 
 func (st *SchemaType) UnmarshalJSON(b []byte) error {
@@ -33,8 +39,20 @@ func (st *SchemaType) UnmarshalJSON(b []byte) error {
 
 func typ(t string) (SchemaType, error) {
 	switch t {
+	case `"string"`:
+		return String, nil
 	case `"number"`:
 		return Number, nil
+	case `"integer"`:
+		return Integer, nil
+	case `"object"`:
+		return Object, nil
+	case `"array"`:
+		return Array, nil
+	case `"boolean"`:
+		return Boolean, nil
+	case `"null"`:
+		return Null, nil
 	}
 
 	return SchemaType(0), fmt.Errorf("unsupported type: %s", t)

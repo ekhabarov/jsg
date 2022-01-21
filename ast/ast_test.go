@@ -22,9 +22,13 @@ var _ = Describe("Ast", func() {
 				Expect(*schema).To(MatchAllFields(fields))
 			},
 
-			Entry("", `{ "type": "number"}`, Fields{
-				"Type": Equal(ast.Number),
-			}),
+			Entry("", `{ "type": "string"}`, Fields{"Type": Equal(ast.String)}),
+			Entry("", `{ "type": "number"}`, Fields{"Type": Equal(ast.Number)}),
+			Entry("", `{ "type": "integer"}`, Fields{"Type": Equal(ast.Integer)}),
+			Entry("", `{ "type": "object"}`, Fields{"Type": Equal(ast.Object)}),
+			Entry("", `{ "type": "array"}`, Fields{"Type": Equal(ast.Array)}),
+			Entry("", `{ "type": "boolean"}`, Fields{"Type": Equal(ast.Boolean)}),
+			Entry("", `{ "type": "null"}`, Fields{"Type": Equal(ast.Null)}),
 		)
 	})
 
