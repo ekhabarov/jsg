@@ -29,6 +29,10 @@ var _ = Describe("Ast", func() {
 			Entry("", `{ "type": "array"}`, Fields{"Type": Equal(ast.Array)}),
 			Entry("", `{ "type": "boolean"}`, Fields{"Type": Equal(ast.Boolean)}),
 			Entry("", `{ "type": "null"}`, Fields{"Type": Equal(ast.Null)}),
+
+			Entry("", `{ "type": ["string", "number", "boolean"]}`, Fields{
+				"Type": Equal(ast.String | ast.Number | ast.Boolean),
+			}),
 		)
 	})
 

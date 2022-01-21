@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"strings"
 )
 
 // SchemaType defines a type of the schema, where a schema can represent just
@@ -29,6 +30,20 @@ func (st *SchemaType) UnmarshalJSON(b []byte) error {
 		}
 
 		*st = t
+
+		return nil
+
+	case string('['):
+		types := v[1 : len(v)-1]
+
+		for _, p := range strings.Split(types, ",") {
+			t, err := typ(strings.TrimSpace(p))
+			if err != nil {
+				return err
+			}
+
+			*st |= t
+		}
 
 		return nil
 
