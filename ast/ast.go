@@ -9,6 +9,8 @@ import (
 
 // SchemaType defines a type of the schema, where a schema can represent just
 // one field or a complex document.
+//
+// https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.1
 type SchemaType uint8
 
 const (

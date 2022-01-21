@@ -138,10 +138,17 @@ var _ = Describe("Ast", func() {
 				"Format": Equal(ast.FormatRegex),
 			}),
 
+			// Numbers
+
+			Entry("", `{ "type": "number"}`, Fields{"Type": Equal(ast.Number)}),
+
 			// Number
 
 			Entry("", `{ "type": "number"}`, Fields{"Type": Equal(ast.Number)}),
 			Entry("", `{ "type": "integer"}`, Fields{"Type": Equal(ast.Integer)}),
+
+			// Object
+
 			Entry("", `{ "type": "object"}`, Fields{"Type": Equal(ast.Object)}),
 			Entry("", `{ "type": "array"}`, Fields{"Type": Equal(ast.Array)}),
 			Entry("", `{ "type": "boolean"}`, Fields{"Type": Equal(ast.Boolean)}),
