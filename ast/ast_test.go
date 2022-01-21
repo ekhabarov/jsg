@@ -22,6 +22,30 @@ var _ = Describe("Ast", func() {
 				Expect(*schema).To(MatchFields(IgnoreExtras, fields))
 			},
 
+			// Numbers
+
+			Entry("", `{ "type": "number"}`, Fields{"Type": Equal(ast.Number)}),
+
+			// Number props
+
+			Entry("", `{
+				"type": "number",
+				"multipleOf": 10,
+				"maximum" : 100,
+				"exclusiveMaximum": 101,
+				"minimum": 50,
+				"exclusiveMinimum": 49
+			}`, Fields{
+				"Type":             Equal(ast.Number),
+				"MultipleOf":       Equal(10.0),
+				"Maximum":          Equal(100.0),
+				"ExclusiveMaximum": Equal(101.0),
+				"Minimum":          Equal(50.0),
+				"ExclusiveMinimum": Equal(49.0),
+			}),
+
+			Entry("", `{ "type": "integer"}`, Fields{"Type": Equal(ast.Integer)}),
+
 			// String type
 
 			Entry("String", `{ "type": "string"}`, Fields{"Type": Equal(ast.String)}),
@@ -137,15 +161,6 @@ var _ = Describe("Ast", func() {
 				"Type":   Equal(ast.String),
 				"Format": Equal(ast.FormatRegex),
 			}),
-
-			// Numbers
-
-			Entry("", `{ "type": "number"}`, Fields{"Type": Equal(ast.Number)}),
-
-			// Number
-
-			Entry("", `{ "type": "number"}`, Fields{"Type": Equal(ast.Number)}),
-			Entry("", `{ "type": "integer"}`, Fields{"Type": Equal(ast.Integer)}),
 
 			// Object
 

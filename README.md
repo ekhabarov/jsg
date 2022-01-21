@@ -49,11 +49,11 @@ JSON schema.
 | `6.1.2. enum`                                      |         |            |              |         |
 | `6.1.3. const`                                     |         |            |              |         |
 | `6.2. Validation Keywords for Numeric Instances`   |         |            |              |         |
-| `6.2.1. multipleOf`                                |         |            |              |         |
-| `6.2.2. maximum`                                   |         |            |              |         |
-| `6.2.3. exclusiveMaximum`                          |         |            |              |         |
-| `6.2.4. minimum`                                   |         |            |              |         |
-| `6.2.5. exclusiveMinimum`                          |         |            |              |         |
+| `6.2.1. multipleOf`                                |x        |            |              |         |
+| `6.2.2. maximum`                                   |x        |            |              |         |
+| `6.2.3. exclusiveMaximum`                          |x        |            |              |         |
+| `6.2.4. minimum`                                   |x        |            |              |         |
+| `6.2.5. exclusiveMinimum`                          |x        |            |              |         |
 | `6.3. Validation Keywords for Strings`             |         |            |              |         |
 | `6.3.1. maxLength`                                 | x       |            |              |         |
 | `6.3.2. minLength`                                 | x       |            |              |         |

@@ -158,22 +158,105 @@ func format(t string) (StringFormat, error) {
 
 // Schema is an Abstract Syntax Tree (AST) representation of JSON schema.
 type Schema struct {
-	// The type keyword is fundamental to JSON Schema. It specifies the data type
-	// for a schema.
+	// 6.1.1. type
 	//
-	// The type keyword may either be a string or an array:
+	// The value of this keyword MUST be either a string or an array. If it is an
+	// array, elements of the array MUST be strings and MUST be unique. String
+	// values MUST be one of the six primitive types ("null", "boolean",
+	// "object", "array", "number", or "string"), or "integer" which matches any
+	// number with a zero fractional part. An instance validates if and only if
+	// the instance is in any of the sets listed for this keyword.
 	//
-	// * If it’s a string, it is the name of one of the basic types above.
-	// * If it is an array, it must be an array of strings, where each string is
-	//   the name of one of the basic types, and each element is unique. In this
-	//   case, the JSON snippet is valid if it matches any of the given types.
+	// https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.1
 	Type SchemaType `json:"type"`
 
-	// String related options.
-	MinLength uint32       `json:"minLength"`
-	MaxLength uint32       `json:"maxLength"`
-	Pattern   string       `json:"pattern"`
-	Format    StringFormat `json:"format"`
+	// 6.2. Validation Keywords for Numeric Instances (number and integer)
+
+	// 6.2.1. multipleOf
+	//
+	// The value of "multipleOf" MUST be a number, strictly greater than 0. A
+	// numeric instance is valid only if division by this keyword's value results
+	// in an integer.
+	//
+	// https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.1
+	MultipleOf float64 `json:"multipleOf"`
+
+	// 6.2.2. maximum
+	//
+	// The value of "maximum" MUST be a number, representing an inclusive upper
+	// limit for a numeric instance. If the instance is a number, then this
+	// keyword validates only if the instance is less than or exactly equal to
+	// "maximum".
+	//
+	// https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.2
+	Maximum float64 `json:"maximum"`
+
+	// 6.2.3. exclusiveMaximum
+	//
+	// The value of "exclusiveMaximum" MUST be a number, representing an
+	// exclusive upper limit for a numeric instance. If the instance is a number,
+	// then the instance is valid only if it has a value strictly less than (not
+	// equal to) "exclusiveMaximum".
+	//
+	// https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.3
+	ExclusiveMaximum float64 `json:"exclusiveMaximum"`
+
+	// 6.2.4. minimum
+	//
+	// The value of "minimum" MUST be a number, representing an inclusive lower
+	// limit for a numeric instance. If the instance is a number, then this
+	// keyword validates only if the instance is greater than or exactly equal to
+	// "minimum".
+	//
+	// https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.4
+	Minimum float64 `json:"minimum"`
+
+	// 6.2.5. exclusiveMinimum
+	//
+	// The value of "exclusiveMinimum" MUST be a number, representing an
+	// exclusive lower limit for a numeric instance. If the instance is a number,
+	// then the instance is valid only if it has a value strictly greater than
+	// (not equal to) "exclusiveMinimum".
+	//
+	// https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.5
+	ExclusiveMinimum float64 `json:"exclusiveMinimum"`
+
+	// 6.3. Validation Keywords for Strings
+
+	// 6.3.1. maxLength
+	//
+	// The value of this keyword MUST be a non-negative integer. A string
+	// instance is valid against this keyword if its length is less than, or
+	// equal to, the value of this keyword. The length of a string instance is
+	// defined as the number of its characters as defined by RFC 8259.
+	//
+	// https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.3.1
+	MaxLength uint32 `json:"maxLength"`
+
+	// 6.3.2. minLength
+	//
+	// The value of this keyword MUST be a non-negative integer. A string
+	// instance is valid against this keyword if its length is greater than, or
+	// equal to, the value of this keyword. The length of a string instance is
+	// defined as the number of its characters as defined by RFC 8259. Omitting
+	// this keyword has the same behavior as a value of 0.
+	//
+	// https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.3.2
+	MinLength uint32 `json:"minLength"`
+
+	// 6.3.3. pattern
+	//
+	// The value of this keyword MUST be a string. This string SHOULD be a valid
+	// regular expression, according to the ECMA-262 regular expression dialect.
+	// A string instance is considered valid if the regular expression matches
+	// the instance successfully. Recall: regular expressions are not implicitly
+	// anchored.
+	//
+	// https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.3.3
+	Pattern string `json:"pattern"`
+
+	// https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.7.3
+	Format StringFormat `json:"format"`
 }
 
 // Parse parses JSON schema into Abstract Syntax Tree.
