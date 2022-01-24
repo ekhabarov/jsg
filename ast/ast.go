@@ -257,6 +257,21 @@ type Schema struct {
 
 	// https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.7.3
 	Format StringFormat `json:"format"`
+
+	// 10.3.2. Keywords for Applying Subschemas to Objects
+
+	// 10.3.2.1. properties
+	//
+	// The value of "properties" MUST be an object. Each value of this object
+	// MUST be a valid JSON Schema. Validation succeeds if, for each name that
+	// appears in both the instance and as a name within this keyword's value,
+	// the child instance for that name successfully validates against the
+	// corresponding schema. The annotation result of this keyword is the set of
+	// instance property names matched by this keyword. Omitting this keyword has
+	// the same assertion behavior as an empty object.
+	//
+	// https://json-schema.org/draft/2020-12/json-schema-core.html#rfc.section.10.3.2.1
+	Properties map[string]Schema `json:"properties"`
 }
 
 // Parse parses JSON schema into Abstract Syntax Tree.
