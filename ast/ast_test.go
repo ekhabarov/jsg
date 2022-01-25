@@ -42,6 +42,12 @@ var _ = Describe("Ast", func() {
 				"ExclusiveMinimum": Equal(49.0),
 			}),
 
+			// $id
+
+			Entry("ID", `{"$id": "https://example.com/a/b/c#tail"}`, Fields{
+				"ID": Equal("https://example.com/a/b/c#tail"),
+			}),
+
 			Entry("", `{"type": "integer"}`, Fields{"Type": Equal(ast.Integer)}),
 
 			// String type
@@ -160,16 +166,17 @@ var _ = Describe("Ast", func() {
 
 			// Object
 
-			Entry("", `{"type": "object"}`, Fields{"Type": Equal(ast.Object)}),
+			Entry("Object", `{"type": "object"}`, Fields{"Type": Equal(ast.Object)}),
 
-			Entry("", `{
+			Entry("Object: properties", `{
 				"type": "object",
 				"properties": {
 					"s": {"type": "string"},
 					"i": {"type": "integer"},
 					"n": {"type": "number"},
 					"b": {"type": "boolean"},
-					"a": {"type": "array"}
+					"a": {"type": "array"},
+					"u": {"type": "null"}
 				}
 			}`, Fields{
 				"Type": Equal(ast.Object),
@@ -179,6 +186,7 @@ var _ = Describe("Ast", func() {
 					"n": MatchFields(IgnoreExtras, Fields{"Type": Equal(ast.Number)}),
 					"b": MatchFields(IgnoreExtras, Fields{"Type": Equal(ast.Boolean)}),
 					"a": MatchFields(IgnoreExtras, Fields{"Type": Equal(ast.Array)}),
+					"u": MatchFields(IgnoreExtras, Fields{"Type": Equal(ast.Null)}),
 				}),
 			}),
 

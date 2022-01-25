@@ -158,6 +158,43 @@ func format(t string) (StringFormat, error) {
 
 // Schema is an Abstract Syntax Tree (AST) representation of JSON schema.
 type Schema struct {
+
+	//   8.2.1. The "$id" Keyword
+	//
+	// The "$id" keyword identifies a schema resource with its canonical URI.
+	//
+	// Note that this URI is an identifier and not necessarily a network locator.
+	// In the case of a network-addressable URL, a schema need not be
+	// downloadable from its canonical URI.
+	//
+	// If present, the value for this keyword MUST be a string, and MUST
+	// represent a valid URI-reference. This URI-reference SHOULD be normalized,
+	// and MUST resolve to an absolute-URI (without a fragment). Therefore, "$id"
+	// MUST NOT contain a non-empty fragment, and SHOULD NOT contain an empty
+	// fragment.
+	//
+	// Since an empty fragment in the context of the application/schema+json
+	// media type refers to the same resource as the base URI without a fragment,
+	// an implementation MAY normalize a URI ending with an empty fragment by
+	// removing the fragment. However, schema authors SHOULD NOT rely on this
+	// behavior across implementations. [CREF3]
+	//
+	// This URI also serves as the base URI for relative URI-references in
+	// keywords within the schema resource, in accordance with RFC 3986 section
+	// 5.1.1 regarding base URIs embedded in content.
+	//
+	// The presence of "$id" in a subschema indicates that the subschema
+	// constitutes a distinct schema resource within a single schema document.
+	// Furthermore, in accordance with RFC 3986 section 5.1.2 regarding
+	// encapsulating entities, if an "$id" in a subschema is a relative
+	// URI-reference, the base URI for resolving that reference is the URI of the
+	// parent schema resource.
+	//
+	// If no parent schema object explicitly identifies itself as a resource with
+	// "$id", the base URI is that of the entire document, as established by the
+	// steps given in the previous section.
+	ID string `json:"$id"`
+
 	// 6.1.1. type
 	//
 	// The value of this keyword MUST be either a string or an array. If it is an
