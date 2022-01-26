@@ -91,7 +91,7 @@ func structure(out io.Writer, s *ast.Schema) error {
 
 		t, imp, err := ast.GoType(p.Type, p.Format)
 		if err != nil {
-			return fmt.Errorf("failed to find Go type for the schema type %q with format %q", p.Type, p.Format)
+			return fmt.Errorf("go type not found: schema type: %q, format: %v", p.Type, p.Format)
 		}
 
 		if imp != "" {

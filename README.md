@@ -90,7 +90,7 @@ JSON schema.
 | `uri-reference`                                    | x       |x           |              |         |
 | `iri`                                              | x       |x           |              |         |
 | `iri-reference`                                    | x       |x           |              |         |
-| `uuid`                                             | x       |            |              |         |
+| `uuid`                                             | x       |x           |              |         |
 | `7.3.6. uri-template`                              | x       |x           |              |         |
 | `7.3.7. JSON Pointers`                             | x       |x           |              |         |
 | `json-pointer`                                     | x       |x           |              |         |
