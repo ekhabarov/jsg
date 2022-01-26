@@ -15,4 +15,4 @@ jobs:
         go-version: ${{ matrix.version }}
     - uses: actions/checkout@v2
     - run: go mod tidy && git diff --exit-code go.mod go.sum
-    - run: go test ./... -v --race
+    - run: go test ./... -v --race --randomizeAllSpecs --randomizeSuites --race
