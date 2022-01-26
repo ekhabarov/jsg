@@ -21,16 +21,16 @@ JSON schema.
 
 | Feature            | Parse | Generate | Validation | Notes |
 |:-------------------|:-----:|:--------:|:----------:|:-----:|
-| `string`           | x     |          |            |       |
+| `string`           | x     |x          |            |       |
 | `string`:`length`  | x     |          |            |       |
 | `string`:`pattern` | x     |          |            |       |
-| `string`:`format`  | x     |          |            |       |
-| `number`           | x     |          |            |       |
-| `integer`          | x     |          |            |       |
+| `string`:`format`  | x     |x          |            |       |
+| `number`           | x     |x         |            |       |
+| `integer`          | x     |x         |            |       |
 | `object`           | x     |          |            |       |
-| `array`            | x     |          |            |       |
-| `boolean`          | x     |          |            |       |
-| `null`             | x     |          |            |       |
+| `array`            | x     |x         |            |       |
+| `boolean`          | x     |x         |            |       |
+| `null`             | x     |x         |            |       |
 | `multi types`      | x     |          |            |       |
 
 * `Parse`: library recognizes the feature inside a JSON schema and converts it’s
@@ -72,28 +72,28 @@ JSON schema.
 | :------------------------------------------------- | :-----: | :--------: | :----------: | :-----: |
 | `7.3. Defined Formats`                             | x       |            |              |         |
 | `7.3.1. Dates, Times, and Duration`                | x       |            |              |         |
-| `date-time`                                        | x       |            |              |         |
-| `date`                                             | x       |            |              |         |
-| `time`                                             | x       |            |              |         |
-| `duration`                                         | x       |            |              |         |
+| `date-time`                                        | x       |x           |              |         |
+| `date`                                             | x       |x           |              |         |
+| `time`                                             | x       |x           |              |         |
+| `duration`                                         | x       |x           |              |         |
 | `7.3.2. Email Addresses`                           | x       |            |              |         |
-| `email`                                            | x       |            |              |         |
-| `idn-email`                                        | x       |            |              |         |
+| `email`                                            | x       |x           |              |         |
+| `idn-email`                                        | x       |x           |              |         |
 | `7.3.3. Hostnames`                                 | x       |            |              |         |
-| `hostname`                                         | x       |            |              |         |
-| `idn-hostname`                                     | x       |            |              |         |
+| `hostname`                                         | x       |x           |              |         |
+| `idn-hostname`                                     | x       |x           |              |         |
 | `7.3.4. IP Addresses`                              | x       |            |              |         |
-| `ipv4`                                             | x       |            |              |         |
-| `ipv6`                                             | x       |            |              |         |
+| `ipv4`                                             | x       |x           |              |         |
+| `ipv6`                                             | x       |x           |              |         |
 | `7.3.5. Resource Identifiers`                      | x       |            |              |         |
-| `uri`                                              | x       |            |              |         |
-| `uri-reference`                                    | x       |            |              |         |
-| `iri`                                              | x       |            |              |         |
-| `iri-reference`                                    | x       |            |              |         |
+| `uri`                                              | x       |x           |              |         |
+| `uri-reference`                                    | x       |x           |              |         |
+| `iri`                                              | x       |x           |              |         |
+| `iri-reference`                                    | x       |x           |              |         |
 | `uuid`                                             | x       |            |              |         |
-| `7.3.6. uri-template`                              | x       |            |              |         |
-| `7.3.7. JSON Pointers`                             | x       |            |              |         |
-| `json-pointer`                                     | x       |            |              |         |
-| `relative-json-pointer`                            | x       |            |              |         |
-| `7.3.8. regex`                                     | x       |            |              |         |
+| `7.3.6. uri-template`                              | x       |x           |              |         |
+| `7.3.7. JSON Pointers`                             | x       |x           |              |         |
+| `json-pointer`                                     | x       |x           |              |         |
+| `relative-json-pointer`                            | x       |x           |              |         |
+| `7.3.8. regex`                                     | x       |x           |              |         |
 

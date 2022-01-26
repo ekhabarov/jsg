@@ -14,7 +14,11 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
-var ErrNoProps = errors.New("there is no properties")
+var (
+	ErrWriteStruct  = errors.New("failed to write structure to output")
+	ErrWriteImports = errors.New("failed to write imports to output")
+	ErrNoProps      = errors.New("there is no properties")
+)
 
 type option func(string) string
 
@@ -33,12 +37,12 @@ func Generate(w io.Writer, s *ast.Schema) error {
 		return nil
 	}
 
-	sheader, err := structHeader(s)
+	err := structure(buf, s)
 	if err != nil {
 		return fmt.Errorf("failed to build struct header: %w", err)
 	}
 
-	p(buf, sheader)
+	// p(buf, sheader)
 
 	b, err := format.Source(buf.Bytes())
 	if err != nil {
@@ -56,36 +60,73 @@ func p(w io.Writer, s string, args ...interface{}) {
 
 func header() string { return "package schema\n" }
 
-func structHeader(s *ast.Schema) (string, error) {
+func structure(out io.Writer, s *ast.Schema) error {
 	if len(s.Properties) < 1 {
-		return "", ErrNoProps
+		return ErrNoProps
 	}
 
 	name, err := SchemaName(s.ID)
 	if err != nil {
-		return "", fmt.Errorf("failed to find schema name: %w", err)
+		return fmt.Errorf("failed to find schema name: %w", err)
 	}
 
-	// fmt.Sprintf("%v")
+	// temporary buffer
+	w := bytes.NewBuffer([]byte{})
+	imports := bytes.NewBuffer([]byte{})
+	// map of unique imports
+	uimports := map[string]struct{}{}
 
-	w := bytes.NewBuffer([]byte(fmt.Sprintf("type %s struct {", name)))
+	fmt.Fprintf(w, "type %s struct {\n", name)
 
 	keys := []string{}
 
-	for n, _ := range s.Properties {
+	for n := range s.Properties {
 		keys = append(keys, n)
 	}
 
-	sort.Sort(sort.StringSlice(keys))
+	sort.Strings(keys)
 
 	for _, n := range keys {
 		p := s.Properties[n]
-		fmt.Fprintf(w, "%s %s\n", n, p.Type)
+
+		t, imp, err := ast.GoType(p.Type, p.Format)
+		if err != nil {
+			return fmt.Errorf("failed to find Go type for the schema type %q with format %q", p.Type, p.Format)
+		}
+
+		if imp != "" {
+			uimports[imp] = struct{}{}
+		}
+
+		fmt.Fprintf(w, "%s %s\n", n, t)
 	}
 
-	w.WriteString("}\n")
+	fmt.Fprintln(w, "}")
 
-	return w.String(), nil
+	if len(uimports) > 0 {
+		ik := []string{}
+		for i := range uimports {
+			ik = append(ik, i)
+		}
+
+		sort.Strings(ik)
+
+		for _, k := range ik {
+			fmt.Fprintf(imports, "import %q\n", k)
+		}
+
+		_, err = io.Copy(out, imports)
+		if err != nil {
+			return ErrWriteImports
+		}
+	}
+
+	_, err = io.Copy(out, w)
+	if err != nil {
+		return ErrWriteStruct
+	}
+
+	return nil
 }
 
 // schemaName returns schema name exetracted from $id property.

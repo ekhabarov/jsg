@@ -1,0 +1,28 @@
+package schema
+
+import "github.com/gofrs/uuid"
+import "net"
+import "regexp"
+import "time"
+
+type StringFormats struct {
+	Date                time.Time
+	DateTime            time.Time
+	Duration            time.Duration
+	Email               string
+	Hostname            string
+	IPv4                net.IP
+	IPv6                net.IP
+	IRI                 string
+	IRIReference        string
+	IdnEmail            string
+	IdnHostname         string
+	JSONPointer         string
+	NoFormat            string
+	Regexp              regexp.Regexp
+	RelativeJSONPointer string
+	Time                time.Time
+	URI                 string
+	URIReference        string
+	UUID                uuid.UUID
+}

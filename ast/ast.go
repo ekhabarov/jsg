@@ -75,24 +75,38 @@ func typ(t string) (SchemaType, error) {
 	return SchemaType(0), fmt.Errorf("unsupported type: %s", t)
 }
 
-// String return Go type for the given SchemaType.
-func (st SchemaType) String() string {
+// GoType returns a Go type mapped to schema type, and imported package name, if
+// necessary.
+func GoType(st SchemaType, format StringFormat) (string, string, error) {
 	switch st {
 	case String:
-		return "string"
+		switch format {
+		case FormatDateTime, FormatDate, FormatTime:
+			return "time.Time", "time", nil
+		case FormatDuration:
+			return "time.Duration", "time", nil
+		case FormatIPv4, FormatIPv6:
+			return "net.IP", "net", nil
+		case FormatRegex:
+			return "regexp.Regexp", "regexp", nil
+		case FormatUUID:
+			return "uuid.UUID", "github.com/gofrs/uuid", nil
+		default:
+			return "string", "", nil
+		}
 	case Integer:
-		return "int"
+		return "int", "", nil
 	case Number:
-		return "float64"
+		return "float64", "", nil
 	case Boolean:
-		return "bool"
+		return "bool", "", nil
 	case Array:
-		return "[]interface{}"
+		return "[]interface{}", "", nil
 	case Null:
-		return "interface{}"
-	default:
-		return "ERROR_TYPE_MAP"
+		return "interface{}", "", nil
 	}
+
+	return "", "", fmt.Errorf("unsupported schema type: %s", st)
 }
 
 // https://json-schema.org/understanding-json-schema/reference/string.html
