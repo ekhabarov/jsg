@@ -1,0 +1,10 @@
+package schema
+
+type Model struct {
+	Array   []interface{}
+	Boolean bool
+	Integer int
+	Null    interface{}
+	Number  float64
+	String  string
+}

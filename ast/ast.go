@@ -75,6 +75,26 @@ func typ(t string) (SchemaType, error) {
 	return SchemaType(0), fmt.Errorf("unsupported type: %s", t)
 }
 
+// String return Go type for the given SchemaType.
+func (st SchemaType) String() string {
+	switch st {
+	case String:
+		return "string"
+	case Integer:
+		return "int"
+	case Number:
+		return "float64"
+	case Boolean:
+		return "bool"
+	case Array:
+		return "[]interface{}"
+	case Null:
+		return "interface{}"
+	default:
+		return "ERROR_TYPE_MAP"
+	}
+}
+
 // https://json-schema.org/understanding-json-schema/reference/string.html
 type StringFormat uint8
 
@@ -309,12 +329,16 @@ type Schema struct {
 	//
 	// https://json-schema.org/draft/2020-12/json-schema-core.html#rfc.section.10.3.2.1
 	Properties map[string]Schema `json:"properties"`
+
+	// Order inside Properties.
+	Ord uint8
 }
 
 // Parse parses JSON schema into Abstract Syntax Tree.
 func Parse(r io.Reader) (*Schema, error) {
 	var sch Schema
 
+	// TODO(ekhabarov): Add an order to properties.
 	if err := json.NewDecoder(r).Decode(&sch); err != nil {
 		return nil, fmt.Errorf("failed to parse schema: %w", err)
 	}
