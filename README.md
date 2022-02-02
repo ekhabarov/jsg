@@ -1,4 +1,5 @@
-# JSON Schema to Go Generator (jsg)
+# JSON Schema to Go Generator (jsg) | WORK IN PROGRESS
+
 The generator produces structure(s) and validation method(s) for them based on
 JSON schema.
 
