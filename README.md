@@ -1,7 +1,9 @@
 # JSON Schema to Go Generator (jsg) | WORK IN PROGRESS
 
-The generator produces structure(s) and validation method(s) for them based on
-JSON schema.
+![Tests](https://github.com/ekhabarov/jsg/actions/workflows/tests.yml/badge.svg)
+[![Go Reference](https://pkg.go.dev/badge/github.com/ekhabarov/jsg.svg)](https://pkg.go.dev/github.com/ekhabarov/jsg)
+
+`jsg` generates Golang code out of [JSON schema](https://json-schema.org/).
 
 ## The flow
 
