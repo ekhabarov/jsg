@@ -6,12 +6,10 @@ import (
 	"fmt"
 	"go/format"
 	"io"
-	"net/url"
 	"sort"
-	"strings"
 
 	"github.com/ekhabarov/jsg/ast"
-	"github.com/iancoleman/strcase"
+	"github.com/ekhabarov/jsg/lib"
 )
 
 var (
@@ -37,12 +35,9 @@ func Generate(w io.Writer, s *ast.Schema) error {
 		return nil
 	}
 
-	err := structure(buf, s)
-	if err != nil {
+	if err := structure(buf, s); err != nil {
 		return fmt.Errorf("failed to build struct header: %w", err)
 	}
-
-	// p(buf, sheader)
 
 	b, err := format.Source(buf.Bytes())
 	if err != nil {
@@ -65,7 +60,7 @@ func structure(out io.Writer, s *ast.Schema) error {
 		return ErrNoProps
 	}
 
-	name, err := SchemaName(s.ID)
+	name, err := lib.URLName(s.ID)
 	if err != nil {
 		return fmt.Errorf("failed to find schema name: %w", err)
 	}
@@ -89,7 +84,7 @@ func structure(out io.Writer, s *ast.Schema) error {
 	for _, n := range keys {
 		p := s.Properties[n]
 
-		t, imp, err := ast.GoType(p.Type, p.Format)
+		t, imp, err := ast.GoType(p.Type, p.Format, p.Ref)
 		if err != nil {
 			return fmt.Errorf("go type not found: schema type: %q, format: %v", p.Type, p.Format)
 		}
@@ -127,21 +122,4 @@ func structure(out io.Writer, s *ast.Schema) error {
 	}
 
 	return nil
-}
-
-// schemaName returns schema name exetracted from $id property.
-func SchemaName(id string) (string, error) {
-	u, err := url.Parse(id)
-	if err != nil {
-		return "", fmt.Errorf("$id property is invalid: %w", err)
-	}
-
-	if u.Path == "" {
-		return "", errors.New("invalid schema name")
-	}
-
-	f := u.Path[strings.LastIndex(u.Path, "/")+1:]
-	f = f[:strings.Index(f, ".")]
-
-	return strcase.ToCamel(f), nil
 }

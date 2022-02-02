@@ -145,8 +145,22 @@ type Schema struct {
 	// https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.7.3
 	Format StringFormat `json:"format"`
 
-	// 10.3.2. Keywords for Applying Subschemas to Objects
+	//   8.2.3.1. Direct References with "$ref"
+	//
+	// The "$ref" keyword is an applicator that is used to reference a statically
+	// identified schema. Its results are the results of the referenced schema.
+	// [CREF5]
+	//
+	// The value of the "$ref" keyword MUST be a string which is a URI-Reference.
+	// Resolved against the current URI base, it produces the URI of the schema to
+	// apply. This resolution is safe to perform on schema load, as the process of
+	// evaluating an instance cannot change how the reference resolves.
+	//
+	// https://json-schema.org/draft/2020-12/json-schema-core.html#rfc.section.8.2.3.1
+	Ref string `json:"$ref"`
 
+	// 10.3.2. Keywords for Applying Subschemas to Objects
+	//
 	// 10.3.2.1. properties
 	//
 	// The value of "properties" MUST be an object. Each value of this object
@@ -159,9 +173,6 @@ type Schema struct {
 	//
 	// https://json-schema.org/draft/2020-12/json-schema-core.html#rfc.section.10.3.2.1
 	Properties map[string]Schema `json:"properties"`
-
-	// Order inside Properties.
-	Ord uint8
 }
 
 // Parse parses JSON schema into Abstract Syntax Tree.

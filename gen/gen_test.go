@@ -2,7 +2,6 @@ package gen_test
 
 import (
 	"bytes"
-	"errors"
 	"io/ioutil"
 
 	"github.com/ekhabarov/jsg/ast"
@@ -13,29 +12,6 @@ import (
 )
 
 var _ = Describe("Gen", func() {
-
-	Context("SchemaName", func() {
-
-		DescribeTable("IDs",
-			func(id, expName string, expErr error) {
-				got, err := gen.SchemaName(id)
-
-				if expErr != nil {
-					Expect(err).To(MatchError(expErr))
-				} else {
-					Expect(err).NotTo(HaveOccurred())
-				}
-
-				Expect(got).To(Equal(expName))
-			},
-
-			Entry("", "https://example.com/name.json", "Name", nil),
-			Entry("", "https://example.com/a/b/c/test.json", "Test", nil),
-			Entry("", "https://example.com/a/b/c/query.json?a=1", "Query", nil),
-			Entry("", "https://example.com/a/b/c/anchor.json#anchor1", "Anchor", nil),
-			Entry("", "https://example.com", "", errors.New("invalid schema name")),
-		)
-	})
 
 	Context("Generate", func() {
 
@@ -89,6 +65,14 @@ var _ = Describe("Gen", func() {
 					"Regexp":              {Type: ast.String, Format: ast.FormatRegex},
 				},
 			}, "string_formats.go"),
+
+			Entry("Struct with ref", ast.Schema{
+				ID: "https://example.com/ref.json",
+				Properties: map[string]ast.Schema{
+					"String": {Type: ast.String},
+					"Sub":    {Ref: "https://example.com/inner.json"},
+				},
+			}, "struct_with_ref.go"),
 		)
 
 	})

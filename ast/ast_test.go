@@ -190,6 +190,21 @@ var _ = Describe("Ast", func() {
 				}),
 			}),
 
+			Entry("Object: $ref", `{
+				"$id": "https://example.com/schema/with/ref",
+				"type": "object",
+				"properties": {
+					"s": {"type": "string"},
+					"ref_full": {"$ref": "https://example.com/a/b/full"}
+				}
+			}`, Fields{
+				"Type": Equal(ast.Object),
+				"Properties": MatchAllKeys(Keys{
+					"s":        MatchFields(IgnoreExtras, Fields{"Type": Equal(ast.String)}),
+					"ref_full": MatchFields(IgnoreExtras, Fields{"Ref": Equal("https://example.com/a/b/full")}),
+				}),
+			}),
+
 			// Array
 			Entry("", `{"type": "array"}`, Fields{"Type": Equal(ast.Array)}),
 			Entry("", `{"type": "boolean"}`, Fields{"Type": Equal(ast.Boolean)}),

@@ -3,6 +3,8 @@ package ast
 import (
 	"fmt"
 	"strings"
+
+	"github.com/ekhabarov/jsg/lib"
 )
 
 // SchemaType defines a type of the schema, where a schema can represent just
@@ -75,7 +77,7 @@ func typ(t string) (SchemaType, error) {
 
 // GoType returns a Go type mapped to schema type, and imported package name, if
 // necessary.
-func GoType(st SchemaType, format StringFormat) (string, string, error) {
+func GoType(st SchemaType, format StringFormat, ref string) (string, string, error) {
 	switch st {
 	case String:
 		switch format {
@@ -102,6 +104,15 @@ func GoType(st SchemaType, format StringFormat) (string, string, error) {
 		return "[]interface{}", "", nil
 	case Null:
 		return "interface{}", "", nil
+	}
+
+	if ref != "" {
+		r, err := lib.URLName(ref)
+		if err != nil {
+			return "", "", fmt.Errorf("malformed $ref: %w", err)
+		}
+
+		return "*" + r, "", nil
 	}
 
 	return "", "", fmt.Errorf("unsupported schema type: %s", st)
